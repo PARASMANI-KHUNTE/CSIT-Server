@@ -99,17 +99,21 @@ router.post("/login", async (req, res) => {
         
       // Check for missing fields
       if (!email || !password) {
+        console.log(`${email} and ${password}`)
+        console.log("Email and password are required.")
         return res.status(400).json({ success: false, message: "Email and password are required." });
       }
   
       // Find user by email
       const User = await user.findOne({ email });
       if (!User) {
+        console.log(`invalid user ${User}`)
         return res.status(404).json({ success: false, message: "Account does not exist." });
       }
   
       // Check if account is active
       if (!User.AccountStatus) {
+        console.log(`Account Status ${User.AccountStatus}`)
         return res.status(403).json({
           success: false,
           message: "Account is not active. Please contact support.",
@@ -122,18 +126,7 @@ router.post("/login", async (req, res) => {
         });
       }
   
-      // Check if password is set for active accounts
-      if (!User.password) {
-        return res.status(400).json({
-          success: false,
-          message: "Account is active, but the password is not set. Please reset your password.",
-          user: {
-            name: User.name,
-            email: User.email,
-            role: User.role,
-          },
-        });
-      }
+
   
       // Verify password
       const passwordMatch = await Encrypt.verifyPassword(password, User.password);

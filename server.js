@@ -23,6 +23,36 @@ dbcon()
 const auth = require('./Routes/auth');
 app.use('/auth', auth);
 
+
+
+// const User = require('./Database/models/User')
+// const user = {
+//   name : "Parasmani khunte",
+//   email : "parasmanikhunte@gmail.com",
+//   role : "admin"
+// }
+
+// const insertData = async (user) =>{
+//    const newuser = new User({
+//       name : user.name,
+//       email : user.email,
+//       role : user.role
+//    })
+//    const isDone = await newuser.save()
+//    if(!isDone){
+//     console.log("Faild Insertion")
+//    }else{
+//     console.log("Successs Check Db")
+//    }
+
+// }
+
+// insertData(user)
+
+
+
+
+
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}` );
 });
