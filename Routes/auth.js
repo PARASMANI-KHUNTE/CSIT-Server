@@ -233,20 +233,16 @@ router.post('/verifyOTP', async (req, res) => {
   });
 
 
-router.put('/UpdatePassword',verifyToken, async (req, res) => {
-    const { email, oldpassword, newpassword } = req.body;
+router.put('/UpdatePassword', async (req, res) => {
+    const { email,password } = req.body;
     const User = await user.findOne({ email });
-    const userPassword = User.password;
-    const decryptpassword = await Encrypt.verifyPassword( oldpassword ,userPassword);
     if (User) {
-        if (decryptpassword) {
-            const encriptedpassword = await Encrypt.hashPassword(newpassword);
+       
+            const encriptedpassword = await Encrypt.hashPassword(password);
             User.password = encriptedpassword;
             await User.save();
             return res.status(200).send({ message: 'Password updated successfully' });
-        } else {
-            return res.status(200).send({ message: 'Old password is incorrect' });
-        }
+       
     } else {
         return res.status(200).send({ message: 'Account does not exist' });
     }
